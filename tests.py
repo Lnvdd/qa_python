@@ -35,26 +35,25 @@ class TestBooksCollector:
     def test_set_book_genre_first_set(self, collector):
         collector.add_new_book('Дюна')
         collector.set_book_genre('Дюна', 'Детективы')
-        assert collector.get_book_genre('Дюна') == 'Детективы'
+        assert collector.books_genre['Дюна'] == 'Детективы'
 
     def test_set_book_genre_change_to_another(self, collector):
         collector.add_new_book('Дюна')
         collector.set_book_genre('Дюна', 'Детективы')
         collector.set_book_genre('Дюна', 'Фантастика')
-        assert collector.get_book_genre('Дюна') == 'Фантастика'
+        assert collector.books_genre['Дюна'] == 'Фантастика'
 
     def test_set_genre_for_nonexistent_book(self, collector):
         collector.set_book_genre('1984', 'Фантастика')
-        assert collector.get_book_genre('1984') is None
+        assert '1984' not in collector.books_genre or collector.books_genre.get('1984') is None
 
     def test_get_book_genre_empty_initially(self, collector):
         collector.add_new_book('Пикник на обочине')
         assert collector.get_book_genre('Пикник на обочине') == ''
 
     def test_get_book_genre_after_setting(self, collector):
-        collector.add_new_book('Пикник на обочине')
-        collector.set_book_genre('Пикник на обочине', 'Комедии')
-        assert collector.get_book_genre('Пикник на обочине') == collector.books_genre['Пикник на обочине']
+        collector.books_genre['Пикник на обочине'] = 'Комедии'  
+        assert collector.get_book_genre('Пикник на обочине') == 'Комедии'
 
     def test_get_book_genre_for_nonexistent_book(self, collector):
         assert collector.get_book_genre('Скотный двор') is None
